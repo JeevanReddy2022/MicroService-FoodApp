@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.restaurentservice.exceptions.RestaurantException;
 import com.restaurentservice1.model.Restaurant;
+import com.restaurentservice1.model.menuItem;
 import com.restaurentservice1.services.RestaurantService;
 
 import jakarta.validation.Valid;
@@ -48,9 +49,9 @@ public class RestaurantServiceController {
 	public ResponseEntity<Restaurant> updateResturant(@Valid @RequestBody Restaurant restaurant)
 			throws RestaurantException {
 
-		Restaurant updatedResturant = restService.updateRestaurant(restaurant);
+		Restaurant updatedRestaurant = restService.updateRestaurant(restaurant);
 
-		return new ResponseEntity<Restaurant>(updatedResturant, HttpStatus.ACCEPTED);
+		return new ResponseEntity<Restaurant>(updatedRestaurant, HttpStatus.ACCEPTED);
 	}
 
 	// working

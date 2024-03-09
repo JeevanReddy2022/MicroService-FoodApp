@@ -37,7 +37,7 @@ public class Restaurant {
 	
 	//@OneToMany(targetEntity = menuItem.class,cascade = CascadeType.ALL)
 	
-	@OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)    
+	@OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)    
 	private List<menuItem> itemList = new ArrayList<>();
 
 	public Restaurant(
@@ -57,6 +57,8 @@ public class Restaurant {
 	public Restaurant() {
 		
 	}
+
+	
 	
 //	public Long getId() {
 //		return Id;

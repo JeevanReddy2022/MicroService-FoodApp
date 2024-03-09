@@ -31,7 +31,7 @@ public class menuItem{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 //	private Long Id;
 	private Integer itemId;
-	// @Column(unique = true) // Add unique constraint at the application level
+	@Column(unique = false) // allow dupilicate values
 	private String itemName;
 	private String Description;
 	private Double cost;
