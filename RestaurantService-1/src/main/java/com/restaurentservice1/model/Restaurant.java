@@ -30,18 +30,26 @@ public class Restaurant {
 	private Integer restaurantId;
 	private String restaurantName;
 	private String address;
+    private String restaurantCity;
+    private String restaurantState;
+    private String restaurantZipcode;
 	
 	
 	//@OneToMany(targetEntity = menuItem.class,cascade = CascadeType.ALL)
-	 @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)    
+	
+	@OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)    
 	private List<menuItem> itemList = new ArrayList<>();
 
 	public Restaurant(
 //			Long id, 
-			Integer restaurantId, String restaurantName,String address, List<menuItem> itemList) {
+			Integer restaurantId, String restaurantName, String address,String restaurantCity,String restaurantState,
+			String restaurantZipcode,List<menuItem> itemList) {
 //		this.Id=id;
 		this.restaurantId = restaurantId;
 		this.restaurantName = restaurantName;
+		this.restaurantCity=restaurantCity;
+		this.restaurantState=restaurantState;
+		this.restaurantZipcode=restaurantZipcode;
 		this.address = address;
 		this.itemList = itemList;
 	}
@@ -80,6 +88,32 @@ public class Restaurant {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	
+	
+
+	public String getRestaurantCity() {
+		return restaurantCity;
+	}
+
+	public void setRestaurantCity(String restaurantCity) {
+		this.restaurantCity = restaurantCity;
+	}
+
+	public String getRestaurantState() {
+		return restaurantState;
+	}
+
+	public void setRestaurantState(String restaurantState) {
+		this.restaurantState = restaurantState;
+	}
+
+	public String getRestaurantZipcode() {
+		return restaurantZipcode;
+	}
+
+	public void setRestaurantZipcode(String restaurantZipcode) {
+		this.restaurantZipcode = restaurantZipcode;
 	}
 
 	public List<menuItem> getItemList() {

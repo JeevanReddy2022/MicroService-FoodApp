@@ -31,7 +31,7 @@ public class menuItem{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 //	private Long Id;
 	private Integer itemId;
-	 @Column(unique = true) // Add unique constraint at the application level
+	// @Column(unique = true) // Add unique constraint at the application level
 	private String itemName;
 	private String Description;
 	private Double cost;
@@ -93,9 +93,5 @@ public class menuItem{
 	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
 	}
-	
-	
-	
-	
 	
 }
