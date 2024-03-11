@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
 
 import com.restaurentservice.exceptions.ItemException;
+import com.restaurentservice1.model.Category;
 import com.restaurentservice1.model.menuItem;
 
 public interface ItemService {
@@ -22,6 +23,7 @@ public interface ItemService {
 	public menuItem addItemToRestaurant(menuItem item, Integer restaurantId) throws ItemException;
 
 	public List<menuItem> getMenuItemsByRestaurantId(Integer restaurantId);
+	public List<menuItem> getMenuItemsByCategory(Category category);
 
 	//menuItem addItem(menuItem item) throws com.restaurentservice1.services.ItemException;
 

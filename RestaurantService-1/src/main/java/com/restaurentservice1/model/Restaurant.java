@@ -33,7 +33,8 @@ public class Restaurant {
     private String restaurantCity;
     private String restaurantState;
     private String restaurantZipcode;
-	
+    private String restaurantImage;
+    private String phoneNumber;
 	
 	//@OneToMany(targetEntity = menuItem.class,cascade = CascadeType.ALL)
 	
@@ -43,7 +44,7 @@ public class Restaurant {
 	public Restaurant(
 //			Long id, 
 			Integer restaurantId, String restaurantName, String address,String restaurantCity,String restaurantState,
-			String restaurantZipcode,List<menuItem> itemList) {
+			String restaurantZipcode,String restaurantImage,String phoneNumber,List<menuItem> itemList) {
 //		this.Id=id;
 		this.restaurantId = restaurantId;
 		this.restaurantName = restaurantName;
@@ -51,6 +52,8 @@ public class Restaurant {
 		this.restaurantState=restaurantState;
 		this.restaurantZipcode=restaurantZipcode;
 		this.address = address;
+		this.restaurantImage=restaurantImage;
+		this.phoneNumber=phoneNumber;
 		this.itemList = itemList;
 	}
 
@@ -116,6 +119,25 @@ public class Restaurant {
 
 	public void setRestaurantZipcode(String restaurantZipcode) {
 		this.restaurantZipcode = restaurantZipcode;
+	}
+
+	
+	public String getRestaurantImage() {
+		return restaurantImage;
+	}
+
+	public void setRestaurantImage(String restaurantImage) {
+		this.restaurantImage = restaurantImage;
+	}
+	
+	
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
 	public List<menuItem> getItemList() {

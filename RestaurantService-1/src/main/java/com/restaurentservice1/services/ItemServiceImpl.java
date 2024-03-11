@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.restaurentservice.exceptions.ItemException;
+import com.restaurentservice1.model.Category;
 import com.restaurentservice1.model.Restaurant;
 import com.restaurentservice1.model.menuItem;
 import com.restaurentservice1.repo.menuItemrepo;
@@ -100,6 +101,13 @@ public class ItemServiceImpl implements ItemService{
     public List<menuItem> getMenuItemsByRestaurantId(Integer restaurantId) {
         return itemDAO.findByRestaurant_RestaurantId(restaurantId);
     }
+
+
+
+	@Override
+	public List<menuItem> getMenuItemsByCategory(Category category) {
+		return itemDAO.findByCategory(category);
+	}
 	
 
 }

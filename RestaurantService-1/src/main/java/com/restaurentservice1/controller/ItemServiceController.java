@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.restaurentservice.exceptions.ItemException;
+import com.restaurentservice1.model.Category;
 import com.restaurentservice1.model.Restaurant;
 import com.restaurentservice1.model.menuItem;
 import com.restaurentservice1.services.ItemService;
@@ -101,4 +102,11 @@ public class ItemServiceController {
 		return new ResponseEntity<List<menuItem>>(items, HttpStatus.OK);
 		
 	}
+	 @GetMapping("/items/category/{category}")
+	    public ResponseEntity<List<menuItem>> getMenuItemsByCategory(@PathVariable Category category) {
+	        List<menuItem> menuItems = itemService.getMenuItemsByCategory(category);
+	        return new ResponseEntity<List<menuItem>>(menuItems, HttpStatus.OK);
+	    }
+	
+	
 }

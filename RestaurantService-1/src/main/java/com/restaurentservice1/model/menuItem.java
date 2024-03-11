@@ -35,6 +35,8 @@ public class menuItem{
 	private String itemName;
 	private String Description;
 	private Double cost;
+	private String itemImage;
+	private Category category;
     @ManyToOne
     @JoinColumn(name = "restaurant_id") // Specify the foreign key column
     @JsonIgnoreProperties("itemList")
@@ -45,12 +47,14 @@ public class menuItem{
 	}
 	public menuItem(
 			//Long id,
-			Integer itemId, String itemName, Integer quantity,String Description, Double cost, Restaurant restaurant ) {
+		Integer itemId, String itemName, Integer quantity,String Description, Double cost, String itemImage,Category category,Restaurant restaurant ) {
 		//this.Id=id;
 		this.itemId = itemId;
 		this.itemName = itemName;
 		this.Description = Description;
 		this.cost = cost;
+		this.category=category;
+		this.itemImage=itemImage;
 		this.restaurant=restaurant;
 	}
 	
@@ -86,6 +90,21 @@ public class menuItem{
 	}
 	public void setCost(Double cost) {
 		this.cost = cost;
+	}
+	
+	
+	public Category getCategory() {
+		return category;
+	}
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+	
+	public String getItemImage() {
+		return itemImage;
+	}
+	public void setItemImage(String itemImage) {
+		this.itemImage = itemImage;
 	}
 	public Restaurant getRestaurant() {
 		return restaurant;
