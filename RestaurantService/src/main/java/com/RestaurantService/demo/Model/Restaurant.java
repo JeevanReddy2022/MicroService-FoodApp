@@ -31,19 +31,9 @@ public class Restaurant {
 
     private String contact;
 
-    @ManyToMany(mappedBy = "restaurants")
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+//    @ManyToMany(mappedBy = "restaurants")
+//    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)  
     private List<Item> items = new ArrayList<>();
 
-    @Override
-    public String toString() {
-        return "Restaurant{" +
-                "restaurantId=" + restaurantId +
-                ", restaurantName='" + restaurantName + '\'' +
-                ", addressId=" + addressId +
-                ", managerName='" + managerName + '\'' +
-                ", contact='" + contact + '\'' +
-                ", items=" + items +
-                '}';
-    }
 }

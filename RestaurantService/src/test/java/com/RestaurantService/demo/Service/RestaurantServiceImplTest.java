@@ -35,7 +35,7 @@ class RestaurantServiceImplTest {
         restaurant.setAddressId(1);
         List<Item> items = new ArrayList<>();
         Item items1 = new Item();
-        items1.getRestaurants().add(restaurant);
+        //items1.getRestaurant().add(restaurant);
         items1.setItemId(1);
         items.add(items1);
         restaurant.getItems().add(items1);

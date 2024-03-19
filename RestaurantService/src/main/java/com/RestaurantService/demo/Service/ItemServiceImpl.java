@@ -1,6 +1,6 @@
 package com.RestaurantService.demo.Service;
 
-import com.RestaurantService.demo.DTO.ItemDTO;
+//import com.RestaurantService.demo.DTO.ItemDTO;
 import com.RestaurantService.demo.DTO.ItemsInRestaurantDTO;
 import com.RestaurantService.demo.Exceptions.ItemException;
 import com.RestaurantService.demo.Exceptions.RestaurantException;
@@ -27,26 +27,34 @@ public class ItemServiceImpl implements ItemService{
     @Autowired
     RestaurantRepository restaurantRepository;
 
-    @Override
-    public ItemsInRestaurantDTO addItem(ItemDTO itemDTO) {
-
-        Category category = categoryService.getCategoryByName(itemDTO.getCategoryName());
-
-        if(category==null) throw new RuntimeException("Category does not exists with name : "+itemDTO.getCategoryName());
-
-        Item item = new Item();
-
-        item.setItemName(itemDTO.getItemName());
-        item.setCost(itemDTO.getCost());
-        item.setCategoryId(category.getCategoryId());
-
-        Item savedItem = itemRepository.save(item);
-
-        ItemsInRestaurantDTO savedItemDTO = getDtoFromItem(savedItem);
-
-        return savedItemDTO;
-
-    }
+//    @Override
+//    public ItemsInRestaurantDTO addItem(ItemDTO itemDTO) {
+//
+//        Category category = categoryService.getCategoryByName(itemDTO.getCategoryName());
+//
+//        if(category==null) throw new RuntimeException("Category does not exists with name : "+itemDTO.getCategoryName());
+//
+//        Item item = new Item();
+//
+//        item.setItemName(itemDTO.getItemName());
+//        item.setCost(itemDTO.getCost());
+//        item.setCategoryId(category.getCategoryId());
+//        item.setRestaurant(itemDTO.getRestaurant());
+//        Item savedItem = itemRepository.save(item);
+//
+//        ItemsInRestaurantDTO savedItemDTO = getDtoFromItem(savedItem);
+//
+//        return savedItemDTO;
+//
+//    }
+    
+	@Override
+	public Item addItemToRestaurant(Item item, Integer restaurantId) {
+		
+		Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(()-> new RestaurantException("Invalid restaurant id : "+restaurantId));
+		 item.setRestaurant(restaurant);
+        return itemRepository.save(item);
+	}
 
     @Override
     public ItemsInRestaurantDTO viewItem(Integer itemId) {
@@ -81,30 +89,31 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public List<Item> viewItemsByCategory(String categoryName) {
+    public List<Item> viewItemsByCategory(Integer categoryId) {
 
-        Category category = categoryService.getCategoryByName(categoryName);
+        Category category = categoryService.getCategoryById(categoryId);
 
-        if(category==null) throw new RuntimeException("Category does not exists with name :"+categoryName);
+       // if(category==null) throw new RuntimeException("Category does not exists with name :"+categoryId);
+        return itemRepository.findByCategoryId(categoryId);
 
-        List<Item> items = itemRepository.findByCategoryId(category.getCategoryId());
-
-        if(items.isEmpty()) throw new ItemException("Items not found");
-
-        return items;
+//        List<Item> items = itemRepository.findByCategoryId(category.getCategoryId());
+//
+//        if(items.isEmpty()) throw new ItemException("Items not found");
+//
+//        return items;
 
     }
 
     @Override
-    public List<ItemsInRestaurantDTO> viewItemsByRestaurant(Integer restaurantId) {
+    public List<Item> viewItemsByRestaurant(Integer restaurantId) {
 
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(()-> new RestaurantException("Invalid restaurant id : "+restaurantId));
 
-        List<ItemsInRestaurantDTO> items =  new ArrayList<>(); //itemRepository.getItemsInRestaurantById(restaurantId);
-
-        if(items.isEmpty()) throw new ItemException("No Items found");
-
-        return items;
+        //  List<Item> items =  new ArrayList<>(); 
+       // if(items.isEmpty()) throw new ItemException("No Items found");
+       // return items;
+        
+        return itemRepository.findByRestaurant_RestaurantId(restaurantId);
 
     }
 
@@ -121,10 +130,32 @@ public class ItemServiceImpl implements ItemService{
         Category category = validateCategory(item.getCategoryId());
 
         itemDTO.setCategory(category);
+        itemDTO.setRestaurant(item.getRestaurant());
 
         return itemDTO;
 
     }
+    
+    //to skip the repeating resturant details 
+    public ItemsInRestaurantDTO getDtoFromItemexceptrestAddress(Item item){
+
+        ItemsInRestaurantDTO itemDTO = new ItemsInRestaurantDTO();
+
+        itemDTO.setItemId(item.getItemId());
+
+        itemDTO.setItemName(item.getItemName());
+
+        itemDTO.setCost(item.getCost());
+
+        Category category = validateCategory(item.getCategoryId());
+
+        itemDTO.setCategory(category);
+        //itemDTO.setRestaurant(item.getRestaurant());
+
+        return itemDTO;
+
+    }
+    
 
     private Category validateCategory(Integer categoryId){
 
@@ -135,4 +166,6 @@ public class ItemServiceImpl implements ItemService{
         return category;
 
     }
+
+
 }

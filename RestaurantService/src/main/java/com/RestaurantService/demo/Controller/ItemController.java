@@ -1,6 +1,6 @@
 package com.RestaurantService.demo.Controller;
 
-import com.RestaurantService.demo.DTO.ItemDTO;
+//import com.RestaurantService.demo.DTO.ItemDTO;
 import com.RestaurantService.demo.DTO.ItemsInRestaurantDTO;
 import com.RestaurantService.demo.Model.Item;
 import com.RestaurantService.demo.Service.ItemService;
@@ -19,18 +19,19 @@ public class ItemController {
     @Autowired
     ItemService itemService;
 
-    @PostMapping("/add")
-    public ResponseEntity<ItemsInRestaurantDTO> addItem(@RequestBody ItemDTO item){
+    @PostMapping("/add/{restaurantId}")
+    public ResponseEntity<Item> addItemToRestaurant(@RequestBody Item item,@PathVariable Integer restaurantId){
 
-        ItemsInRestaurantDTO addedItem = itemService.addItem(item);
+        Item addedItem = itemService.addItemToRestaurant(item, restaurantId);
 
         return new ResponseEntity<>(addedItem, HttpStatus.CREATED);
+        
 
     }
 
+    
     @PutMapping("/update")
     public ResponseEntity<ItemsInRestaurantDTO> updateItem(@RequestBody Item item){
-
         ItemsInRestaurantDTO updatedItem = itemService.updateItem(item);
 
         return new ResponseEntity<>(updatedItem,HttpStatus.ACCEPTED);
@@ -55,21 +56,21 @@ public class ItemController {
 
     }
 
-    @GetMapping("/itembycategory/{categoryName}")
-    public ResponseEntity<List<Item>> viewItemByCategoryName(@PathVariable String categoryName){
+    @GetMapping("/itembycategory/{categoryId}")
+    public ResponseEntity<List<Item>> viewItemByCategoryName(@PathVariable Integer categoryId){
 
-        List<Item> items = itemService.viewItemsByCategory(categoryName);
+        List<Item> items = itemService.viewItemsByCategory(categoryId);
 
         return new ResponseEntity<>(items,HttpStatus.OK);
 
     }
 
     @GetMapping("/itembyrestaurant/{restaurantId}")
-    public ResponseEntity<List<ItemsInRestaurantDTO>> viewItemByRestaurant(@PathVariable Integer restaurantId){
+    public ResponseEntity<List<Item>> viewItemByRestaurant(@PathVariable Integer restaurantId){
 
-        List<ItemsInRestaurantDTO> items = itemService.viewItemsByRestaurant(restaurantId);
+        List<Item> items = itemService.viewItemsByRestaurant(restaurantId);
 
-        return new ResponseEntity<>(items,HttpStatus.OK);
+        return new ResponseEntity<List<Item>>(items,HttpStatus.OK);
 
     }
 //    public ResponseEntity<String> fallBackRetryHandler(FeignException exc){

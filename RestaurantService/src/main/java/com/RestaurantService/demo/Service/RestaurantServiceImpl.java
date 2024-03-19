@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -92,57 +93,65 @@ public class RestaurantServiceImpl implements RestaurantService{
 
         List<Item> savedItems = restaurant.getItems();
 
-        savedItems.stream().forEach((el)-> items.add(itemService.getDtoFromItem(el)));
+        savedItems.stream().forEach((el)-> items.add(itemService.getDtoFromItemexceptrestAddress(el)));
 
         restaurantDTO.setItems(items);
 
         return restaurantDTO;
+    	
+//    	Optional<Restaurant> opt = restaurantRepository.findByRestaurantId(restaurantId);
+//		if(opt.isPresent()) {
+//			Restaurant restaurant = opt.get();
+//			return restaurant;
+//		}else {
+//			throw new RestaurantException("No Restaurant found with ID: "+restaurantId);
+//		}
 
     }
 
-    @Override
-    public List<Restaurant> viewRestaurantByLocation(String location) {
+//    @Override
+//    public List<Restaurant> viewRestaurantByLocation(String location) {
+//
+//        // PROBLEM : Needs optimization in relationship structure
+//
+//        return null;
+//
+//
+//    }
 
-        // PROBLEM : Needs optimization in relationship structure
+//    @Override
+//    public List<RestaurantsInItemDTO> viewRestaurantByItem(Integer itemId) {
+//
+//        Item item = itemRepository.findById(itemId).orElseThrow(()-> new ItemException("Invalid item id : "+itemId));
+//
+//        List<RestaurantsInItemDTO> restaurantsDto = new ArrayList<>(); // restaurantRepository.getRestaurantsByItem(itemId);
+//
+//        List<Restaurant> restaurants = item.getRestaurants();
+//
+//        if(restaurants.isEmpty()) throw new RestaurantException("No restaurant found");
+//
+//        restaurants.stream().forEach((restaurant -> restaurantsDto.add(getDTOFromRestaurant(restaurant))));
+//
+//        return restaurantsDto;
+//
+//    }
 
-        return null;
-
-
-    }
-
-    @Override
-    public List<RestaurantsInItemDTO> viewRestaurantByItem(Integer itemId) {
-
-        Item item = itemRepository.findById(itemId).orElseThrow(()-> new ItemException("Invalid item id : "+itemId));
-
-        List<RestaurantsInItemDTO> restaurantsDto = new ArrayList<>(); // restaurantRepository.getRestaurantsByItem(itemId);
-
-        List<Restaurant> restaurants = item.getRestaurants();
-
-        if(restaurants.isEmpty()) throw new RestaurantException("No restaurant found");
-
-        restaurants.stream().forEach((restaurant -> restaurantsDto.add(getDTOFromRestaurant(restaurant))));
-
-        return restaurantsDto;
-
-    }
-
-    @Override
-    public Restaurant addItemToRestaurantMenu(Integer itemId, Integer restaurantId) {
-
-        Restaurant restaurant = validateRestaurant(restaurantId);
-
-        Item item = itemRepository.findById(itemId).orElseThrow(()-> new ItemException("Invalid item id : "+itemId));
-
-        item.getRestaurants().add(restaurant);
-
-        restaurant.getItems().add(item);
-
-        itemRepository.save(item);
-
-        return restaurantRepository.save(restaurant);
-
-    }
+//    @Override
+//    public Restaurant addItemToRestaurantMenu(Integer itemId, Integer restaurantId) {
+//
+//        Restaurant restaurant = validateRestaurant(restaurantId);
+//
+//        Item item = itemRepository.findById(itemId).orElseThrow(()-> new ItemException("Invalid item id : "+itemId));
+//
+//        item.getRestaurants().add(restaurant);
+//
+//        restaurant.getItems().add(item);
+//
+//        itemRepository.save(item);
+//
+//        return restaurantRepository.save(restaurant);
+//
+//    }
 
     private RestaurantsInItemDTO getDTOFromRestaurant(Restaurant restaurant){
 
@@ -172,4 +181,9 @@ public class RestaurantServiceImpl implements RestaurantService{
         return restaurantRepository.findById(restaurantId).orElseThrow(()-> new RestaurantException("Invalid restaurant id : "+restaurantId));
 
     }
+
+	@Override
+	public List<Restaurant> getAllRestaurants() {
+	  return restaurantRepository.findAll();
+	}
 }

@@ -57,6 +57,16 @@ public class RestaurantController {
         return new ResponseEntity<>(restaurant,HttpStatus.OK);
 
     }
+    
+    @GetMapping("/all")
+    public ResponseEntity<List<Restaurant>> getAllRestaurants() {
+        List<Restaurant> restaurants = restaurantService.getAllRestaurants();
+        if (restaurants.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(restaurants, HttpStatus.OK);
+        }
+    }
 
 //    @GetMapping("/getnearbyRestaurant/{location}")
 //    public ResponseEntity<List<Restaurant>> getNearByRestaurant(@PathVariable String location){
@@ -67,24 +77,24 @@ public class RestaurantController {
 //
 //    }
 
-    @GetMapping("/getrestaurantsbyitem/{itemId}")
+//    @GetMapping("/getrestaurantsbyitem/{itemId}")
+//
+//    public ResponseEntity<List<RestaurantsInItemDTO>> viewRestaurantByItem(@PathVariable Integer itemId){
+//
+//        List<RestaurantsInItemDTO> restaurants = restaurantService.viewRestaurantByItem(itemId);
+//
+//        return new ResponseEntity<>(restaurants,HttpStatus.OK);
+//
+//    }
 
-    public ResponseEntity<List<RestaurantsInItemDTO>> viewRestaurantByItem(@PathVariable Integer itemId){
-
-        List<RestaurantsInItemDTO> restaurants = restaurantService.viewRestaurantByItem(itemId);
-
-        return new ResponseEntity<>(restaurants,HttpStatus.OK);
-
-    }
-
-    @GetMapping("/{restaurantId}/{itemId}")
-    public ResponseEntity<Restaurant> addItemToRestaurant(@PathVariable Integer restaurantId,@PathVariable Integer itemId){
-
-        Restaurant restaurant = restaurantService.addItemToRestaurantMenu(itemId,restaurantId);
-
-        return new ResponseEntity<>(restaurant,HttpStatus.OK);
-
-    }
+//    @PostMapping("/{restaurantId}/{itemId}")
+//    public ResponseEntity<Restaurant> addItemToRestaurant(@PathVariable Integer restaurantId,@PathVariable Integer itemId){
+//
+//        Restaurant restaurant = restaurantService.addItemToRestaurantMenu(itemId,restaurantId);
+//
+//        return new ResponseEntity<>(restaurant,HttpStatus.OK);
+//
+//    }
 
 //    public ResponseEntity<String> fallBackRetryHandler(FeignException exc){
 //        System.out.println(exc);

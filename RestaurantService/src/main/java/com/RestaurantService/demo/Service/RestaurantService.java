@@ -16,10 +16,12 @@ public interface RestaurantService {
 
     public RestaurantDTO viewRestaurant(Integer restaurantId);
 
-    public List<Restaurant> viewRestaurantByLocation(String location);
+	public List<Restaurant> getAllRestaurants();
 
-    public List<RestaurantsInItemDTO> viewRestaurantByItem(Integer itemId);
+    //public List<Restaurant> viewRestaurantByLocation(String location);
 
-    public Restaurant addItemToRestaurantMenu(Integer itemId, Integer restaurantId);
+   // public List<RestaurantsInItemDTO> viewRestaurantByItem(Integer itemId);
+
+    //public Restaurant addItemToRestaurantMenu(Integer itemId, Integer restaurantId);
 
 }
