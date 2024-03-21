@@ -28,6 +28,11 @@ public class ItemsInRestaurantDTO {
     private Category category;
 
     private Double cost;
+    
+    private String ItemImageUrl;
+    
+    private String description;
+    
 
     private Restaurant restaurant;
 

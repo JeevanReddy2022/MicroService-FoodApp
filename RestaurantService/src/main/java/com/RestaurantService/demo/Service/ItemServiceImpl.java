@@ -126,6 +126,9 @@ public class ItemServiceImpl implements ItemService{
         itemDTO.setItemName(item.getItemName());
 
         itemDTO.setCost(item.getCost());
+        
+        itemDTO.setItemImageUrl(item.getItemimageUrl());
+        itemDTO.setDescription(item.getDescription());
 
         Category category = validateCategory(item.getCategoryId());
 
@@ -135,6 +138,8 @@ public class ItemServiceImpl implements ItemService{
         return itemDTO;
 
     }
+    
+    
     
     //to skip the repeating resturant details 
     public ItemsInRestaurantDTO getDtoFromItemexceptrestAddress(Item item){
@@ -146,10 +151,13 @@ public class ItemServiceImpl implements ItemService{
         itemDTO.setItemName(item.getItemName());
 
         itemDTO.setCost(item.getCost());
+        itemDTO.setItemImageUrl(item.getItemimageUrl());
+        itemDTO.setDescription(item.getDescription());
 
         Category category = validateCategory(item.getCategoryId());
 
         itemDTO.setCategory(category);
+        
         //itemDTO.setRestaurant(item.getRestaurant());
 
         return itemDTO;

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -46,6 +47,30 @@ public class FoodCartServiceImpl implements FoodCartService{
         return foodCartDTO;
 
     }
+
+//@Override
+//public FoodCartDTO createCartForUser(FoodCartDTO foodCartDTO) {
+//    FoodCart foodCart = new FoodCart();
+//    foodCart.setUserId(foodCartDTO.getUserId());
+//
+//    List<Item> items = new ArrayList<>();
+//    for (Item itemDTO : foodCartDTO.getItems()) {
+//        Item item = new Item();
+//        item.setItemId(itemDTO.getItemId());
+//        item.setItemName(itemDTO.getItemName());
+//        item.setCategory(itemDTO.getCategory());
+//        item.setQuantity(itemDTO.getQuantity());
+//        item.setRestaurantId(itemDTO.getRestaurantId());
+//        // Set other fields accordingly
+//
+//        items.add(item);
+//    }
+//
+//    foodCart.setItems(items);
+//    foodCartRepository.save(foodCart); // Save the cart to the database
+//
+//    return foodCartDTO; // Return the saved DTO
+//}
 
     public FoodCartDTO removeCart(Integer cartId){
 

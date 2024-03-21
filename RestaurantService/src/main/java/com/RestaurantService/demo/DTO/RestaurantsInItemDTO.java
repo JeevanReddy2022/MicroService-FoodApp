@@ -24,6 +24,8 @@ public class RestaurantsInItemDTO {
     private String restaurantName;
 
     private Address address;
+    
+    private String restaurant_image_Url;
 
     private String managerName;
 

@@ -25,9 +25,16 @@ public class Item {
     private Integer itemId;
 
     private String itemName;
+    
+    
+    private String description;
+    
+    private String ItemimageUrl;
 
     //@JsonIgnore
     private Integer categoryId;
+    
+   // private itemType itemType;
 
     private Double cost;
 
@@ -38,4 +45,10 @@ public class Item {
     @JsonIgnoreProperties("items")
     private Restaurant restaurant;
 
+    
+    
+//    public enum itemType{
+//    	NON_VEG,
+//    	VEG
+//    }
 }

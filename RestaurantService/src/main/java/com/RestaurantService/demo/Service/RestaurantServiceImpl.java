@@ -45,6 +45,8 @@ public class RestaurantServiceImpl implements RestaurantService{
         restaurant.setContact(restaurantDTO.getContact());
         restaurant.setAddressId(address.getAddressId());
         restaurant.setManagerName(restaurantDTO.getManagerName());
+        restaurant.setRestaurant_image_Url(restaurantDTO.getRestaurant_image_Url());
+        
 
         Restaurant savedRestaurant = restaurantRepository.save(restaurant);
 
@@ -88,7 +90,8 @@ public class RestaurantServiceImpl implements RestaurantService{
         restaurantDTO.setContact(restaurant.getContact());
         restaurantDTO.setManagerName(restaurant.getManagerName());
         restaurantDTO.setAddress(validateAddress(restaurant.getAddressId()));
-
+        restaurantDTO.setRestaurant_image_Url(restaurant.getRestaurant_image_Url());
+        
         List<ItemsInRestaurantDTO> items = new ArrayList<>();
 
         List<Item> savedItems = restaurant.getItems();
@@ -162,7 +165,7 @@ public class RestaurantServiceImpl implements RestaurantService{
         savedRestaurantDTO.setContact(restaurant.getContact());
         savedRestaurantDTO.setAddress(validateAddress(restaurant.getAddressId()));
         savedRestaurantDTO.setManagerName(restaurant.getManagerName());
-
+        savedRestaurantDTO.setRestaurant_image_Url(restaurant.getRestaurant_image_Url());
         return savedRestaurantDTO;
     }
 

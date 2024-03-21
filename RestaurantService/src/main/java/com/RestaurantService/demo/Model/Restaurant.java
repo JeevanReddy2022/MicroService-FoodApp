@@ -28,6 +28,8 @@ public class Restaurant {
     private Integer addressId;
 
     private String managerName;
+    
+    private String restaurant_image_Url;
 
     private String contact;
 

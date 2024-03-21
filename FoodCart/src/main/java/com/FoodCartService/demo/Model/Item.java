@@ -36,6 +36,7 @@ public class Item {
     private Integer restaurantId ;
 
     @ManyToOne
+    @JoinColumn(name = "cart_id")
     @JsonIgnore
     private FoodCart foodCart;
 
