@@ -1,6 +1,4 @@
 package com.RestaurantService.demo.Controller;
-
-//import com.RestaurantService.demo.DTO.ItemDTO;
 import com.RestaurantService.demo.DTO.ItemsInRestaurantDTO;
 import com.RestaurantService.demo.Model.Item;
 import com.RestaurantService.demo.Service.ItemService;
@@ -16,8 +14,12 @@ import java.util.List;
 @RequestMapping("/fooddelivery/items")
 public class ItemController {
 
-    @Autowired
-    ItemService itemService;
+	private final ItemService itemService;
+	
+	@Autowired
+    public ItemController(ItemService itemService) {
+        this.itemService = itemService;
+    }
 
     @PostMapping("/add/{restaurantId}")
     public ResponseEntity<Item> addItemToRestaurant(@RequestBody Item item,@PathVariable Integer restaurantId){

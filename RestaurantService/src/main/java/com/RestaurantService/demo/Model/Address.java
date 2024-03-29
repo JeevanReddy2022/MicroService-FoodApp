@@ -2,9 +2,6 @@ package com.RestaurantService.demo.Model;
 
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor

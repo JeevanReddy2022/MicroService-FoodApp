@@ -1,17 +1,16 @@
-package com.OrderDetails.demo.Model;
+package com.OrderDetails.demo.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+public class ItemsInRestaurantOrderDTO{
 
-public class Item {
     private Integer itemId;
 
     private String itemName;
@@ -20,7 +19,6 @@ public class Item {
 
     private Double cost;
     
-    private String status;
-    
     private Integer restaurantId;
+
 }

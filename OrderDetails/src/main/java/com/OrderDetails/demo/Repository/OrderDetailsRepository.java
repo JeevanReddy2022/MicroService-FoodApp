@@ -9,5 +9,9 @@ public interface OrderDetailsRepository extends JpaRepository<OrderDetails,Integ
 
     public List<OrderDetails> findByCartId(Integer cartId);
 
+	//public List<OrderDetails> findByRestaurantId(Integer restaurantId);
+
+	
+
 
 }

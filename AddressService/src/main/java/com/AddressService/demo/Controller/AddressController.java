@@ -12,8 +12,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/fooddelivery/address")
 public class AddressController {
 
-    @Autowired
-    AddressService addressService;
+   
+   private final AddressService addressService;
+   
+   @Autowired
+    public AddressController(AddressService addressService) {
+    	this.addressService=addressService;
+    }
 
     @PostMapping
     public ResponseEntity<Address> registerAddress(@RequestBody Address address){

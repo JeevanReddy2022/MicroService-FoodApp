@@ -12,9 +12,18 @@ import java.util.Optional;
 @Service
 public class CategoryServiceImpl implements CategoryService{
 
-    @Autowired
-    CategoryRepository categoryRepository;
+//    @Autowired
+//    CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
+    
+    private static final String CATEGORY_ID_NOT_FOUND_MESSAGE = "Category does not exists with category id : ";
 
+    
+    @Autowired
+    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+    	this.categoryRepository=categoryRepository;
+    }
+    
     @Override
     public Category addCategory(Category category) {
 
@@ -29,7 +38,7 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public Category updateCategory(Category category) {
 
-        Category savedCategory = categoryRepository.findById(category.getCategoryId()).orElseThrow(()-> new CategoryException("Category does not exists with category id : "+category.getCategoryId()));
+        Category savedCategory = categoryRepository.findById(category.getCategoryId()).orElseThrow(()-> new CategoryException(CATEGORY_ID_NOT_FOUND_MESSAGE+category.getCategoryId()));
 
         Optional<Category> alreadyPresentCategoryOpt = categoryRepository.findByCategoryName(category.getCategoryName());
 
@@ -44,7 +53,7 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public Category removeCategory(Integer categoryId) {
 
-        Category savedCategory = categoryRepository.findById(categoryId).orElseThrow(()-> new CategoryException("Category does not exists with category id : "+categoryId));
+        Category savedCategory = categoryRepository.findById(categoryId).orElseThrow(()-> new CategoryException(CATEGORY_ID_NOT_FOUND_MESSAGE+categoryId));
 
         categoryRepository.delete(savedCategory);
 
@@ -55,7 +64,7 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public Category viewCategoryById(Integer categoryId) {
 
-        return categoryRepository.findById(categoryId).orElseThrow(()-> new CategoryException("Category does not exists with category id : "+categoryId));
+        return categoryRepository.findById(categoryId).orElseThrow(()-> new CategoryException(CATEGORY_ID_NOT_FOUND_MESSAGE+categoryId));
 
     }
 

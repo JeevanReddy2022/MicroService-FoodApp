@@ -1,123 +1,240 @@
 package com.OrderDetails.demo.Service;
 
+import com.OrderDetails.demo.DTO.AddOrderDetailsDTO;
+import com.OrderDetails.demo.DTO.ItemsInRestaurantOrderDTO;
 import com.OrderDetails.demo.DTO.OrderDetailsDTO;
+import com.OrderDetails.demo.DTO.OrderItemDTO;
+import com.OrderDetails.demo.Exceptions.CartException;
 import com.OrderDetails.demo.Exceptions.OrderException;
 import com.OrderDetails.demo.Model.FoodCart;
+import com.OrderDetails.demo.Model.Item;
 import com.OrderDetails.demo.Model.OrderDetails;
+import com.OrderDetails.demo.Model.OrderItem;
 import com.OrderDetails.demo.Repository.OrderDetailsRepository;
+import com.OrderDetails.demo.Repository.OrderItemRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class OrderDetailsServiceImpl implements OrderDetailsService{
+public class OrderDetailsServiceImpl implements OrderDetailsService {
 
-    @Autowired
-    OrderDetailsRepository orderDetailsRepository;
+//    @Autowired
+//    OrderDetailsRepository orderDetailsRepository;
+//
+//    @Autowired
+//    CartService cartService;
 
-    @Autowired
-    CartService cartService;
+	private final OrderDetailsRepository orderDetailsRepository;
+	private final CartService cartService;
+	private final OrderItemRepository orderItemRepository;
 
-    @Override
-    public OrderDetails addOrder(Integer cartId) {
+	@Autowired
+	public OrderDetailsServiceImpl(OrderDetailsRepository orderDetailsRepository, CartService cartService,
+			OrderItemRepository orderItemRepository) {
+		this.orderDetailsRepository = orderDetailsRepository;
+		this.cartService = cartService;
+		this.orderItemRepository = orderItemRepository;
+	}
 
-        validateCart(cartId);
+	/*------- written by  -----------*/
+	@Override
+	public OrderDetails updateOrder(OrderDetails orderDetails) {
 
-        OrderDetails orderDetails = new OrderDetails();
+		validateCart(orderDetails.getCartId());
 
-        orderDetails.setCartId(cartId);
+		return orderDetailsRepository.save(orderDetails);
 
-        orderDetails.setStatus("Pending");
+	}
+	
+	/*------- written by  -----------*/
 
-        orderDetails.setTimeSpan(LocalDateTime.now());
+	@Override
+	public OrderDetails removeOrder(Integer orderId) {
 
-        return orderDetailsRepository.save(orderDetails);
+		OrderDetails orderDetails = validateOrderDetails(orderId);
 
-    }
+		orderDetailsRepository.delete(orderDetails);
 
-    @Override
-    public OrderDetails updateOrder(OrderDetails orderDetails) {
+		return orderDetails;
 
-        validateCart(orderDetails.getCartId());
+	}
+		
+			/*------- written by  JeevanReddy-----------*/
+	@Override
+	public OrderDetailsDTO viewOrder(Integer orderId) {
 
-        return orderDetailsRepository.save(orderDetails);
+		OrderDetails orderDetails = validateOrderDetails(orderId);
 
+		return getDTOFromOrder(orderDetails);
 
-    }
+	}
+	
+	
+	/*------- written by    -----------*/
+	@Override
+	public List<OrderDetailsDTO> viewOrderOfCustomer(Integer cartId) {
 
-    @Override
-    public OrderDetails removeOrder(Integer orderId) {
+		List<OrderDetails> orderDetails = orderDetailsRepository.findByCartId(cartId);
 
-        OrderDetails orderDetails = validateOrderDetails(orderId);
+		if (orderDetails.isEmpty())
+			throw new OrderException("No orders found");
 
-        orderDetailsRepository.delete(orderDetails);
+		List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
 
-        return orderDetails;
+		orderDetails.stream().forEach(el -> orderDetailsDTOS.add(getDTOFromOrder(el)));
 
-    }
+		return orderDetailsDTOS;
 
-    @Override
-    public OrderDetailsDTO viewOrder(Integer orderId) {
+	}
+		
+	/*------- written by  JeevanReddy-----------*/
+	private FoodCart validateCart(Integer cartId) {
 
-        OrderDetails orderDetails = validateOrderDetails(orderId);
+		FoodCart foodCart = cartService.getCart(cartId);
 
-        return getDTOFromOrder(orderDetails);
+		if (foodCart == null)
+			throw new CartException("Food Cart does not exists");
 
-    }
+		return foodCart;
 
-    @Override
-    public List<OrderDetails> viewOrderOfRestaurant(Integer restaurantId) { return  null; }
+	}
 
-    @Override
-    public List<OrderDetailsDTO> viewOrderOfCustomer(Integer cartId) {
+	/*------- written by  JeevanReddy-----------*/
+	private OrderDetails validateOrderDetails(Integer orderId) {
 
-        List<OrderDetails> orderDetails = orderDetailsRepository.findByCartId(cartId);
+		return orderDetailsRepository.findById(orderId)
+				.orElseThrow(() -> new OrderException("Invalid order id : " + orderId));
 
-        if(orderDetails.isEmpty()) throw new OrderException("No orders found");
+	}
+	
+	/*------- written by  JeevanReddy-----------*/
 
-        List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
+	private OrderDetailsDTO getDTOFromOrder(OrderDetails orderDetails) {
 
-        orderDetails.stream().forEach((el) -> orderDetailsDTOS.add(getDTOFromOrder(el)));
+		OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO();
 
-        return orderDetailsDTOS;
+		FoodCart foodCart = validateCart(orderDetails.getCartId());
 
-    }
+		orderDetailsDTO.setFoodCart(foodCart);
 
-    private FoodCart validateCart(Integer cartId){
+		orderDetailsDTO.setStatus(orderDetails.getStatus());
 
-        FoodCart foodCart = cartService.getCart(cartId);
+		orderDetailsDTO.setOrderId(orderDetails.getOrderId());
 
-        if(foodCart==null) throw new RuntimeException("Food Cart does not exists");
+		orderDetailsDTO.setTimeSpan(orderDetails.getTimeSpan());
 
-        return foodCart;
+		return orderDetailsDTO;
 
-    }
+	}
+	
+	  /*------------Written by JeevanReddy---------------*/
+//  @Override
+//  public OrderDetails addOrder(Integer cartId) {
+//
+//      validateCart(cartId);
+//
+//      OrderDetails orderDetails = new OrderDetails();
+//
+//      orderDetails.setCartId(cartId);
+//
+//      orderDetails.setStatus("Pending");
+//
+//      orderDetails.setTimeSpan(LocalDateTime.now());
+//      
+//      FoodCart foodCart = cartService.getCart(cartId);
+//      for (Item foodItem : foodCart.getItems()) {
+//          OrderItem orderItem = new OrderItem();
+//          orderItem.setItemId(foodItem.getItemId());
+//          orderItem.setItemName(foodItem.getItemName());
+//          orderItem.setQuantity(foodItem.getQuantity());
+//          orderItem.setCost(foodItem.getCost());
+//          orderItem.setRestaurantId(foodItem.getRestaurantId());
+//          orderItem.setUserId(foodCart.getUserId());
+//          //orderItem.setOrderDetails(orderDetails);
+//          
+//          orderDetails.getItems().add(orderItem);
+//      }
+//
+//      return orderDetailsRepository.save(orderDetails);
+//
+//  }
+	
+			/*------- written by  JeevanReddy-----------*/
+	@Override
+	public AddOrderDetailsDTO addOrder(Integer cartId) {
+		validateCart(cartId);
 
-    private OrderDetails validateOrderDetails(Integer orderId){
+		OrderDetails orderDetails = new OrderDetails();
+		orderDetails.setCartId(cartId);
+		orderDetails.setStatus("Pending");
+		orderDetails.setTimeSpan(LocalDateTime.now());
 
-        return orderDetailsRepository.findById(orderId).orElseThrow(()-> new OrderException("Invalid order id : "+orderId));
+		FoodCart foodCart = cartService.getCart(cartId);
+		for (Item foodItem : foodCart.getItems()) {
+			OrderItem orderItem = new OrderItem();
+			orderItem.setItemId(foodItem.getItemId());
+			orderItem.setItemName(foodItem.getItemName());
+			orderItem.setQuantity(foodItem.getQuantity());
+			orderItem.setCost(foodItem.getCost());
+			orderItem.setRestaurantId(foodItem.getRestaurantId());
+			orderItem.setUserId(foodCart.getUserId());
+			orderItem.setOrderDetails(orderDetails);
 
-    }
+			orderDetails.getItems().add(orderItem);
+		}
 
-    private OrderDetailsDTO getDTOFromOrder(OrderDetails orderDetails){
+		orderDetails = orderDetailsRepository.save(orderDetails);
+		return convertToDTO(orderDetails);
+	}
 
-        OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO();
+	private AddOrderDetailsDTO convertToDTO(OrderDetails orderDetails) {
+		AddOrderDetailsDTO dto = new AddOrderDetailsDTO();
+		dto.setTimeSpan(orderDetails.getTimeSpan());
+		dto.setCartId(orderDetails.getCartId());
+		dto.setStatus(orderDetails.getStatus());
+		dto.setItems(orderDetails.getItems().stream().map(this::convertToDTO).collect(Collectors.toList()));
+		return dto;
+	}
 
-        FoodCart foodCart = validateCart(orderDetails.getCartId());
+	private OrderItemDTO convertToDTO(OrderItem orderItem) {
+		OrderItemDTO dto = new OrderItemDTO();
+		dto.setItemId(orderItem.getItemId());
+		dto.setItemName(orderItem.getItemName());
+		dto.setQuantity(orderItem.getQuantity());
+		dto.setCost(orderItem.getCost());
+		dto.setUserId(orderItem.getUserId());
+		dto.setRestaurantId(orderItem.getRestaurantId());
+		return dto;
+	}
 
-        orderDetailsDTO.setFoodCart(foodCart);
+	
+			/*------- written by  JeevanReddy-----------*/
+	@Override
+	public List<ItemsInRestaurantOrderDTO> viewOrderOfRestaurant(Integer restaurantId) {
+	
+		
+		List<OrderItem> orderedItems = orderItemRepository.findByRestaurantId(restaurantId);
 
-        orderDetailsDTO.setStatus(orderDetails.getStatus());
+		// Convert the list of ordered items to DTOs
+		List<ItemsInRestaurantOrderDTO> itemsInRestaurantOrderDTOList = new ArrayList<>();
+		for (OrderItem orderItem : orderedItems) {
+			ItemsInRestaurantOrderDTO dto = new ItemsInRestaurantOrderDTO();
+			dto.setItemId(orderItem.getItemId());
+			dto.setItemName(orderItem.getItemName());
+			dto.setQuantity(orderItem.getQuantity());
+			dto.setCost(orderItem.getCost());
+			dto.setRestaurantId(orderItem.getRestaurantId());
 
-        orderDetailsDTO.setOrderId(orderDetails.getOrderId());
+			itemsInRestaurantOrderDTOList.add(dto);
+		}
 
-        orderDetailsDTO.setTimeSpan(orderDetails.getTimeSpan());
+		return itemsInRestaurantOrderDTOList;
+	}
 
-        return orderDetailsDTO;
-
-    }
 }

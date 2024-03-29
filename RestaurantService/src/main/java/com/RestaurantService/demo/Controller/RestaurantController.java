@@ -17,8 +17,13 @@ import java.util.List;
 @RequestMapping("/fooddelivery/restaurant")
 public class RestaurantController {
 
+    
+    private final RestaurantService restaurantService;
+    
     @Autowired
-    RestaurantService restaurantService;
+    public RestaurantController(RestaurantService restaurantService) {
+    	this.restaurantService=restaurantService;
+    }
 
     @PostMapping("/add")
     public ResponseEntity<RestaurantsInItemDTO> addRestaurant(@RequestBody RestaurantsInItemDTO restaurant){

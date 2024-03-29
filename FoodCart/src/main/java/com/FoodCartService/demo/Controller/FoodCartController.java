@@ -3,8 +3,6 @@ import com.FoodCartService.demo.DTO.FoodCartDTO;
 import com.FoodCartService.demo.Model.FoodCart;
 import com.FoodCartService.demo.Model.Item;
 import com.FoodCartService.demo.Service.FoodCartService;
-
-import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/fooddelivery/foodcart")
 public class FoodCartController {
 
-    @Autowired
-    FoodCartService foodCartService;
+	   private final FoodCartService foodCartService;
 
+	    @Autowired
+	    public FoodCartController(FoodCartService foodCartService) {
+	        this.foodCartService = foodCartService;
+	    }
     @PostMapping
 
     public ResponseEntity<FoodCartDTO> registerCart(@RequestBody FoodCartDTO foodCartDTO){

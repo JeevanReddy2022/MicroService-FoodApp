@@ -1,11 +1,9 @@
 package com.FoodCartService.demo.Model;
 
 import com.FoodCartService.demo.DTO.ItemDTO;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

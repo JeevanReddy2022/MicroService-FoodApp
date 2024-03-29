@@ -3,7 +3,7 @@ package com.RestaurantService.demo.Service;
 import com.RestaurantService.demo.DTO.ItemsInRestaurantDTO;
 import com.RestaurantService.demo.DTO.RestaurantDTO;
 import com.RestaurantService.demo.DTO.RestaurantsInItemDTO;
-import com.RestaurantService.demo.Exceptions.ItemException;
+import com.RestaurantService.demo.Exceptions.AddressException;
 import com.RestaurantService.demo.Exceptions.RestaurantException;
 import com.RestaurantService.demo.Model.Address;
 import com.RestaurantService.demo.Model.Item;
@@ -16,23 +16,39 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 @Transactional
 public class RestaurantServiceImpl implements RestaurantService{
 
-    @Autowired
-    RestaurantRepository restaurantRepository;
+//    @Autowired
+//    RestaurantRepository restaurantRepository;
+//
+//    @Autowired
+//    ItemRepository itemRepository;
+//
+//    @Autowired
+//    ItemService itemService;
+//
+//    @Autowired
+//    AddressService addressService;
+	
+	  private final RestaurantRepository restaurantRepository;
+	    private final ItemRepository itemRepository;
+	    private final ItemService itemService;
+	    private final AddressService addressService;
 
-    @Autowired
-    ItemRepository itemRepository;
-
-    @Autowired
-    ItemService itemService;
-
-    @Autowired
-    AddressService addressService;
+	    @Autowired
+	    public RestaurantServiceImpl(RestaurantRepository restaurantRepository,
+	                       ItemRepository itemRepository,
+	                       ItemService itemService,
+	                       AddressService addressService) {
+	        this.restaurantRepository = restaurantRepository;
+	        this.itemRepository = itemRepository;
+	        this.itemService = itemService;
+	        this.addressService = addressService;
+	    }
 
     @Override
     public RestaurantsInItemDTO addRestaurant(RestaurantsInItemDTO restaurantDTO) {
@@ -96,65 +112,13 @@ public class RestaurantServiceImpl implements RestaurantService{
 
         List<Item> savedItems = restaurant.getItems();
 
-        savedItems.stream().forEach((el)-> items.add(itemService.getDtoFromItemexceptrestAddress(el)));
+        savedItems.stream().forEach(el-> items.add(itemService.getDtoFromItemexceptrestAddress(el)));
 
         restaurantDTO.setItems(items);
 
         return restaurantDTO;
     	
-//    	Optional<Restaurant> opt = restaurantRepository.findByRestaurantId(restaurantId);
-//		if(opt.isPresent()) {
-//			Restaurant restaurant = opt.get();
-//			return restaurant;
-//		}else {
-//			throw new RestaurantException("No Restaurant found with ID: "+restaurantId);
-//		}
-
     }
-
-//    @Override
-//    public List<Restaurant> viewRestaurantByLocation(String location) {
-//
-//        // PROBLEM : Needs optimization in relationship structure
-//
-//        return null;
-//
-//
-//    }
-
-//    @Override
-//    public List<RestaurantsInItemDTO> viewRestaurantByItem(Integer itemId) {
-//
-//        Item item = itemRepository.findById(itemId).orElseThrow(()-> new ItemException("Invalid item id : "+itemId));
-//
-//        List<RestaurantsInItemDTO> restaurantsDto = new ArrayList<>(); // restaurantRepository.getRestaurantsByItem(itemId);
-//
-//        List<Restaurant> restaurants = item.getRestaurants();
-//
-//        if(restaurants.isEmpty()) throw new RestaurantException("No restaurant found");
-//
-//        restaurants.stream().forEach((restaurant -> restaurantsDto.add(getDTOFromRestaurant(restaurant))));
-//
-//        return restaurantsDto;
-//
-//    }
-
-//    @Override
-//    public Restaurant addItemToRestaurantMenu(Integer itemId, Integer restaurantId) {
-//
-//        Restaurant restaurant = validateRestaurant(restaurantId);
-//
-//        Item item = itemRepository.findById(itemId).orElseThrow(()-> new ItemException("Invalid item id : "+itemId));
-//
-//        item.getRestaurants().add(restaurant);
-//
-//        restaurant.getItems().add(item);
-//
-//        itemRepository.save(item);
-//
-//        return restaurantRepository.save(restaurant);
-//
-//    }
 
     private RestaurantsInItemDTO getDTOFromRestaurant(Restaurant restaurant){
 
@@ -173,7 +137,7 @@ public class RestaurantServiceImpl implements RestaurantService{
 
         Address address = addressService.getAddress(addressId);
 
-        if(address==null) throw new RuntimeException("Invalid address id : "+addressId);
+        if(address==null) throw new AddressException("Invalid address id : "+addressId);
 
         return address;
 
@@ -190,3 +154,65 @@ public class RestaurantServiceImpl implements RestaurantService{
 	  return restaurantRepository.findAll();
 	}
 }
+
+
+
+
+	
+//	Optional<Restaurant> opt = restaurantRepository.findByRestaurantId(restaurantId);
+//	if(opt.isPresent()) {
+//		Restaurant restaurant = opt.get();
+//		return restaurant;
+//	}else {
+//		throw new RestaurantException("No Restaurant found with ID: "+restaurantId);
+//	}
+
+
+
+//@Override
+//public List<Restaurant> viewRestaurantByLocation(String location) {
+//
+//    // PROBLEM : Needs optimization in relationship structure
+//
+//    return null;
+//
+//
+//}
+
+//@Override
+//public List<RestaurantsInItemDTO> viewRestaurantByItem(Integer itemId) {
+//
+//    Item item = itemRepository.findById(itemId).orElseThrow(()-> new ItemException("Invalid item id : "+itemId));
+//
+//    List<RestaurantsInItemDTO> restaurantsDto = new ArrayList<>(); // restaurantRepository.getRestaurantsByItem(itemId);
+//
+//    List<Restaurant> restaurants = item.getRestaurants();
+//
+//    if(restaurants.isEmpty()) throw new RestaurantException("No restaurant found");
+//
+//    restaurants.stream().forEach((restaurant -> restaurantsDto.add(getDTOFromRestaurant(restaurant))));
+//
+//    return restaurantsDto;
+//
+//}
+
+//@Override
+//public Restaurant addItemToRestaurantMenu(Integer itemId, Integer restaurantId) {
+//
+//    Restaurant restaurant = validateRestaurant(restaurantId);
+//
+//    Item item = itemRepository.findById(itemId).orElseThrow(()-> new ItemException("Invalid item id : "+itemId));
+//
+//    item.getRestaurants().add(restaurant);
+//
+//    restaurant.getItems().add(item);
+//
+//    itemRepository.save(item);
+//
+//    return restaurantRepository.save(restaurant);
+//
+//}
+
+
+
+

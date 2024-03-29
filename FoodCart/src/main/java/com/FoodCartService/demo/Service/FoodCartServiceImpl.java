@@ -3,6 +3,7 @@ package com.FoodCartService.demo.Service;
 import com.FoodCartService.demo.DTO.FoodCartDTO;
 import com.FoodCartService.demo.DTO.ItemDTO;
 import com.FoodCartService.demo.Exceptions.CartException;
+import com.FoodCartService.demo.Exceptions.ItemException;
 import com.FoodCartService.demo.Exceptions.RestaurantException;
 import com.FoodCartService.demo.Model.FoodCart;
 import com.FoodCartService.demo.Model.Item;
@@ -12,28 +13,29 @@ import com.FoodCartService.demo.Repository.ItemRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class FoodCartServiceImpl implements FoodCartService{
 
-    @Autowired
-    FoodCartRepository foodCartRepository;
+	 private final FoodCartRepository foodCartRepository;
+	    private final ItemRepository itemRepository;
+	    private final ItemService itemService;
+	    private final RestaurantService restaurantService;
 
-    @Autowired
-    ItemRepository itemRepository;
-
-    @Autowired
-    ItemService itemService;
-
-    @Autowired
-    RestaurantService restaurantService;
+	    @Autowired
+	    public FoodCartServiceImpl(FoodCartRepository foodCartRepository,
+	                               ItemRepository itemRepository,
+	                               ItemService itemService,
+	                               RestaurantService restaurantService) {
+	        this.foodCartRepository = foodCartRepository;
+	        this.itemRepository = itemRepository;
+	        this.itemService = itemService;
+	        this.restaurantService = restaurantService;
+	    }
 
     @Override
     public FoodCartDTO createCartForUser(FoodCartDTO foodCartDTO){
@@ -105,7 +107,7 @@ public class FoodCartServiceImpl implements FoodCartService{
 
         List<Item> items = foodCart.getItems();
 
-       Boolean isPresent = items.stream().anyMatch((item)-> item.getItemId()== itemId);
+       boolean isPresent = items.stream().anyMatch(item-> item.getItemId().equals(itemId));
 
         if(isPresent) throw new CartException("Item already present in the cart");
 
@@ -115,9 +117,9 @@ public class FoodCartServiceImpl implements FoodCartService{
 
         List<ItemDTO> restaurantItems = restaurant.getItems();
 
-        Optional<ItemDTO> itemOpt = restaurantItems.stream().filter((el)-> el.getItemId()==itemId).findAny();
+        Optional<ItemDTO> itemOpt = restaurantItems.stream().filter(el-> el.getItemId().equals(itemId)).findAny();
 
-        if(itemOpt.isEmpty()) throw new RestaurantException("item does not exists in this restaurant");
+        if(itemOpt.isEmpty()) throw new ItemException("item does not exists in this restaurant");
 
         ItemDTO itemDTO = itemOpt.get();
 
@@ -142,9 +144,9 @@ public class FoodCartServiceImpl implements FoodCartService{
 
         List<Item> items = foodCart.getItems();
 
-        Optional<Item> itemOpt = items.stream().filter((el)-> el.getItemId()==itemId).findAny();
+        Optional<Item> itemOpt = items.stream().filter(el-> el.getItemId().equals(itemId)).findAny();
 
-        if(!itemOpt.isPresent()) throw new RuntimeException("item does not exists with item id : "+itemId);
+        if(!itemOpt.isPresent()) throw new ItemException("item does not exists with item id : "+itemId);
 
         Item savedItem = itemOpt.get();
 
@@ -174,7 +176,7 @@ public class FoodCartServiceImpl implements FoodCartService{
 //        itemRepository.clearCart(cartId);
         List<Item> items = validatedCart.getItems();
 
-        items.forEach((item)-> itemRepository.delete(item));
+        items.forEach(item-> itemRepository.delete(item));
 
         return validateCart(cartId);
 

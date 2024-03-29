@@ -14,37 +14,40 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.OrderDetails.demo.DTO.AddOrderDetailsDTO;
+import com.OrderDetails.demo.DTO.ItemsInRestaurantOrderDTO;
 import com.OrderDetails.demo.DTO.OrderDetailsDTO;
 import com.OrderDetails.demo.Model.OrderDetails;
+import com.OrderDetails.demo.Model.OrderItem;
 import com.OrderDetails.demo.Service.OrderDetailsService;
+
 
 @RestController
 @RequestMapping("/fooddelivery/orderdetails")
 public class OrderDetailsController {
 
-    @Autowired
-    OrderDetailsService orderDetailsService;
+    
+    private final OrderDetailsService orderDetailsService;
 
+    
+    @Autowired
+    public OrderDetailsController(OrderDetailsService orderDetailsService) {
+    	this.orderDetailsService=orderDetailsService;
+    	}
+
+    					/*------- written by  JeevanReddy-----------*/
     @PostMapping("/{cartId}")
   
-    public ResponseEntity<OrderDetails> addOrder( @PathVariable Integer cartId){
+    public ResponseEntity<AddOrderDetailsDTO> addOrder( @PathVariable Integer cartId){
 
-        OrderDetails savedOrder = orderDetailsService.addOrder(cartId);
+        AddOrderDetailsDTO savedOrder = orderDetailsService.addOrder(cartId);
 
         return new ResponseEntity<>(savedOrder, HttpStatus.CREATED);
 
     }
-
-    @PutMapping
     
-    public ResponseEntity<OrderDetails> updateOrder(@RequestBody OrderDetails orderDetails){
 
-        OrderDetails updatedOrder = orderDetailsService.updateOrder(orderDetails);
-
-        return new ResponseEntity<>(updatedOrder,HttpStatus.ACCEPTED);
-
-    }
-
+						/*------- written by  JeevanReddy-----------*/
 
     @GetMapping("/{orderId}")
     
@@ -55,7 +58,64 @@ public class OrderDetailsController {
         return new ResponseEntity<>(orderDetailsdto,HttpStatus.OK);
 
     }
+    
+    /*------- written by  -----------*/
+    @DeleteMapping("/{orderId}")
+    
+    public ResponseEntity<String> removeOrder(@PathVariable Integer orderId){
 
+        OrderDetails removedOrder = orderDetailsService.removeOrder(orderId);
 
+        String message = "Order with ID " + orderId + " is deleted";
+        
+        return new ResponseEntity<>(message, HttpStatus.OK);
+
+    }
+    
+    /*------- written by  -----------*/
+    
+    @PutMapping
+    public ResponseEntity<OrderDetails> updateOrder(@RequestBody OrderDetails orderDetails){
+
+        OrderDetails updatedOrder = orderDetailsService.updateOrder(orderDetails);
+
+        return new ResponseEntity<>(updatedOrder,HttpStatus.ACCEPTED);
+
+    }
+    
+    
+    /*------- written by  -----------*/
+    @GetMapping("/ordersofacustomer/{cartId}")
+
+    public ResponseEntity<List<OrderDetailsDTO>> viewOrderOfCustomer(@PathVariable Integer cartId){
+
+        List<OrderDetailsDTO> orderDetailsDTO = orderDetailsService.viewOrderOfCustomer(cartId);
+
+        return new ResponseEntity<>(orderDetailsDTO,HttpStatus.OK);
+    }
+    
+    
+    			/*------- written by  JeevanReddy-----------*/
+    
+    @GetMapping("/ordersofarestaurant/{restaurantId}")
+    public ResponseEntity<List<ItemsInRestaurantOrderDTO>> viewOrderOfRestaurant(@PathVariable Integer restaurantId) {
+    	
+        List<ItemsInRestaurantOrderDTO> itemsInRestaurantOrderDTO = orderDetailsService.viewOrderOfRestaurant(restaurantId);
+        
+        return new ResponseEntity<>(itemsInRestaurantOrderDTO, HttpStatus.OK);
+    }
+    
+    
+//  @GetMapping("/ordersofarestaurant/{restaurantId}")
+//  public ResponseEntity<List<ItemsInRestaurantOrderDTO>> viewOrderOfRestaurant(Integer restaurantId){
+//
+//      List<ItemsInRestaurantOrderDTO> ItemsInRestaurantOrderDTO = restaurantOrdersService.viewOrderOfRestaurant(restaurantId);
+//
+//      return new ResponseEntity<>(ItemsInRestaurantOrderDTO,HttpStatus.OK);
+//
+//  }
+    //based on restaurant id we need to filter the items present in the foodcart that is ordered 
+    // Get ordered items based on restaurantId
+  
 
 }

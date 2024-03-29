@@ -11,21 +11,22 @@ import com.RestaurantService.demo.Repository.ItemRepository;
 import com.RestaurantService.demo.Repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ItemServiceImpl implements ItemService{
+	  private static final String ITEM_NOT_FOUND_MESSAGE = "Item does not exist with item id : ";
 
-    @Autowired
-    ItemRepository itemRepository;
+	    private final ItemRepository itemRepository;
+	    private final CategoryService categoryService;
+	    private final RestaurantRepository restaurantRepository;
 
-    @Autowired
-    CategoryService categoryService;
-
-    @Autowired
-    RestaurantRepository restaurantRepository;
+	    @Autowired
+	    public ItemServiceImpl(ItemRepository itemRepository, CategoryService categoryService, RestaurantRepository restaurantRepository) {
+	        this.itemRepository = itemRepository;
+	        this.categoryService = categoryService;
+	        this.restaurantRepository = restaurantRepository;
+	    }
 
 //    @Override
 //    public ItemsInRestaurantDTO addItem(ItemDTO itemDTO) {
@@ -59,7 +60,7 @@ public class ItemServiceImpl implements ItemService{
     @Override
     public ItemsInRestaurantDTO viewItem(Integer itemId) {
 
-        Item item = itemRepository.findById(itemId).orElseThrow(()-> new ItemException("Item does not exists with item id : "+itemId));
+        Item item = itemRepository.findById(itemId).orElseThrow(()-> new ItemException(ITEM_NOT_FOUND_MESSAGE+itemId));
 
         return getDtoFromItem(item);
 
@@ -68,7 +69,7 @@ public class ItemServiceImpl implements ItemService{
     @Override
     public ItemsInRestaurantDTO updateItem(Item item) {
 
-        Item validatedItem = itemRepository.findById(item.getItemId()).orElseThrow(()-> new ItemException("Item does not exists with item id : "+item.getItemId()));
+        Item validatedItem = itemRepository.findById(item.getItemId()).orElseThrow(()-> new ItemException(ITEM_NOT_FOUND_MESSAGE+item.getItemId()));
 
         validateCategory(item.getCategoryId());
 
@@ -80,7 +81,7 @@ public class ItemServiceImpl implements ItemService{
     @Override
     public boolean removeItem(Integer itemId) {
 
-        Item validatedItem = itemRepository.findById(itemId).orElseThrow(()-> new ItemException("Item does not exists with item id : "+itemId));
+        Item validatedItem = itemRepository.findById(itemId).orElseThrow(()-> new ItemException(ITEM_NOT_FOUND_MESSAGE+itemId));
 
         itemRepository.delete(validatedItem);
 

@@ -2,19 +2,22 @@ package com.FoodCartService.demo.Service;
 
 import com.FoodCartService.demo.DTO.ItemDTO;
 import com.FoodCartService.demo.Exceptions.ItemException;
-import com.FoodCartService.demo.Model.Category;
 import com.FoodCartService.demo.Model.Item;
 import com.FoodCartService.demo.Repository.ItemRepository;
-import jakarta.persistence.Embedded;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ItemServiceImpl implements ItemService{
 
+    
+    private final ItemRepository itemRepository;
+    
     @Autowired
-    ItemRepository itemRepository;
-
+    public ItemServiceImpl(ItemRepository itemRepository) {
+    	this.itemRepository=itemRepository;
+    }
+    
     @Override
     public Item addItem(ItemDTO itemDTO) {
 
