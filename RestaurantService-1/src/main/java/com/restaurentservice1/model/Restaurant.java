@@ -19,7 +19,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
+@Getter
+@Setter
 @Entity
 public class Restaurant {
 	
@@ -35,8 +36,6 @@ public class Restaurant {
     private String restaurantZipcode;
     private String restaurantImage;
     private String phoneNumber;
-	
-	//@OneToMany(targetEntity = menuItem.class,cascade = CascadeType.ALL)
 	
 	@OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)    
 	private List<menuItem> itemList = new ArrayList<>();
@@ -61,92 +60,5 @@ public class Restaurant {
 		
 	}
 
-	
-	
-//	public Long getId() {
-//		return Id;
-//	}
-//
-//	public void setId(Long id) {
-//		Id = id;
-//	}
-
-	public Integer getRestaurantId() {
-		return restaurantId;
-	}
-
-	public void setRestaurantId(Integer restaurantId) {
-		this.restaurantId = restaurantId;
-	}
-
-	public String getRestaurantName() {
-		return restaurantName;
-	}
-
-	public void setRestaurantName(String restaurantName) {
-		this.restaurantName = restaurantName;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	
-	
-
-	public String getRestaurantCity() {
-		return restaurantCity;
-	}
-
-	public void setRestaurantCity(String restaurantCity) {
-		this.restaurantCity = restaurantCity;
-	}
-
-	public String getRestaurantState() {
-		return restaurantState;
-	}
-
-	public void setRestaurantState(String restaurantState) {
-		this.restaurantState = restaurantState;
-	}
-
-	public String getRestaurantZipcode() {
-		return restaurantZipcode;
-	}
-
-	public void setRestaurantZipcode(String restaurantZipcode) {
-		this.restaurantZipcode = restaurantZipcode;
-	}
-
-	
-	public String getRestaurantImage() {
-		return restaurantImage;
-	}
-
-	public void setRestaurantImage(String restaurantImage) {
-		this.restaurantImage = restaurantImage;
-	}
-	
-	
-
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-	public List<menuItem> getItemList() {
-		return itemList;
-	}
-
-	public void setItemList(List<menuItem> itemList) {
-		this.itemList = itemList;
-	}
-	
 	
 }

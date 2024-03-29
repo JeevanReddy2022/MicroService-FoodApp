@@ -51,10 +51,10 @@ public class ItemServiceController {
     public ResponseEntity<?> addItemToRestaurant(@RequestBody menuItem item, @PathVariable Integer restaurantId) {
 		
         try {
- // 		  Restaurant restaurant = restService.findRestaurantById(restaurantId);
-//		    if (restaurant == null) {
-//		        throw new ItemException("Restaurant with ID " + restaurantId + " not found");
-//		    }
+  		  Restaurant restaurant = restService.findRestaurantById(restaurantId);
+		    if (restaurant == null) {
+		        throw new ItemException("Restaurant with ID " + restaurantId + " not found");
+		    }
         	
             menuItem newItem = itemService.addItemToRestaurant(item, restaurantId);
             return new ResponseEntity<>(newItem, HttpStatus.CREATED);

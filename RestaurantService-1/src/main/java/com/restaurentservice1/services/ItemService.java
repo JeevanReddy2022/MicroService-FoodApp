@@ -25,6 +25,9 @@ public interface ItemService {
 	public List<menuItem> getMenuItemsByRestaurantId(Integer restaurantId);
 	public List<menuItem> getMenuItemsByCategory(Category category);
 
+
+	
+
 	//menuItem addItem(menuItem item) throws com.restaurentservice1.services.ItemException;
 
 	

@@ -29,7 +29,6 @@ public class menuItem{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-//	private Long Id;
 	private Integer itemId;
 	@Column(unique = false) // allow dupilicate values
 	private String itemName;
@@ -42,13 +41,9 @@ public class menuItem{
     @JsonIgnoreProperties("itemList")
     private Restaurant restaurant;
 	
-	public menuItem() {
-	
-	}
 	public menuItem(
-			//Long id,
 		Integer itemId, String itemName, Integer quantity,String Description, Double cost, String itemImage,Category category,Restaurant restaurant ) {
-		//this.Id=id;
+		
 		this.itemId = itemId;
 		this.itemName = itemName;
 		this.Description = Description;
@@ -59,58 +54,5 @@ public class menuItem{
 	}
 	
 	
-	
-//	public Long getId() {
-//		return Id;
-//	}
-//	public void setId(Long id) {
-//		Id = id;
-//	}
-	public Integer getItemId() {
-		return itemId;
-	}
-	public void setItemId(Integer itemId) {
-		this.itemId = itemId;
-	}
-	public String getItemName() {
-		return itemName;
-	}
-	public void setItemName(String itemName) {
-		this.itemName = itemName;
-	}
-
-	public String getDescription() {
-		return Description;
-	}
-	public void setDescription(String description) {
-		Description = description;
-	}
-	public Double getCost() {
-		return cost;
-	}
-	public void setCost(Double cost) {
-		this.cost = cost;
-	}
-	
-	
-	public Category getCategory() {
-		return category;
-	}
-	public void setCategory(Category category) {
-		this.category = category;
-	}
-	
-	public String getItemImage() {
-		return itemImage;
-	}
-	public void setItemImage(String itemImage) {
-		this.itemImage = itemImage;
-	}
-	public Restaurant getRestaurant() {
-		return restaurant;
-	}
-	public void setRestaurant(Restaurant restaurant) {
-		this.restaurant = restaurant;
-	}
 	
 }

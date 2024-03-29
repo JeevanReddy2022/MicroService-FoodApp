@@ -17,4 +17,5 @@ public interface RestaurantService {
 	public Restaurant findRestaurantById(Integer restaurantId);
 
 	public List<Restaurant> getAllRestaurants();
+
 }
