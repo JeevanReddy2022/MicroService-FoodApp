@@ -97,7 +97,13 @@ public class OrderDetailsController {
     
     			/*------- written by  JeevanReddy-----------*/
     
-
+    @GetMapping("/ordersofarestaurant/{restaurantId}")
+    public ResponseEntity<List<ItemsInRestaurantOrderDTO>> viewOrderOfRestaurant(@PathVariable Integer restaurantId) {
+    	
+        List<ItemsInRestaurantOrderDTO> itemsInRestaurantOrderDTO = orderDetailsService.viewOrderOfRestaurant(restaurantId);
+        
+        return new ResponseEntity<>(itemsInRestaurantOrderDTO, HttpStatus.OK);
+    }
     
     
 //  @GetMapping("/ordersofarestaurant/{restaurantId}")

@@ -213,6 +213,26 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		return dto;
 	}
 
+	/*------- written by  JeevanReddy-----------*/
+	@Override
+	public List<ItemsInRestaurantOrderDTO> viewOrderOfRestaurant(Integer restaurantId) {
 
+		List<OrderItem> orderedItems = orderItemRepository.findByRestaurantId(restaurantId);
+
+		// Convert the list of ordered items to DTOs
+		List<ItemsInRestaurantOrderDTO> itemsInRestaurantOrderDTOList = new ArrayList<>();
+		for (OrderItem orderItem : orderedItems) {
+			ItemsInRestaurantOrderDTO dto = new ItemsInRestaurantOrderDTO();
+			dto.setItemId(orderItem.getItemId());
+			dto.setItemName(orderItem.getItemName());
+			dto.setQuantity(orderItem.getQuantity());
+			dto.setCost(orderItem.getCost());
+			dto.setRestaurantId(orderItem.getRestaurantId());
+
+			itemsInRestaurantOrderDTOList.add(dto);
+		}
+
+		return itemsInRestaurantOrderDTOList;
+	}
 
 }

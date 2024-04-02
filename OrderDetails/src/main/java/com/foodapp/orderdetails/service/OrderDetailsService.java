@@ -20,7 +20,7 @@ public interface OrderDetailsService {
 
     public List<OrderDetailsDTO> viewOrderOfCustomer(Integer userId);
 
-	
+	List<ItemsInRestaurantOrderDTO> viewOrderOfRestaurant(Integer restaurantId);
 
 	//List<OrderDetails> viewOrderOfRestaurant(Integer restaurantId);
 

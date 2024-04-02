@@ -90,11 +90,10 @@ public class ItemServiceImpl implements ItemService{
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(()-> new RestaurantException("Invalid restaurant id : "+restaurantId));
         
         return itemRepository.findByRestaurant_RestaurantId(restaurantId);
-
     }
 
+    
     public UpdateItemDTO getDtoFromItem(Item item){
-
     	UpdateItemDTO itemDTO = new UpdateItemDTO();
         itemDTO.setItemId(item.getItemId());
         itemDTO.setItemName(item.getItemName());
